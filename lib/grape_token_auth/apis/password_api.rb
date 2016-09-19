@@ -25,8 +25,8 @@ module GrapeTokenAuth
       end
 
       base.post do
-        email = params[:email]
-        throw_unauthorized('You must provide an email address.') unless email
+        username = params[:username]
+        throw_unauthorized('You must provide an email address.') unless username
 
         redirect_url = params[:redirect_url]
         validate_redirect_url!(redirect_url)
@@ -45,7 +45,7 @@ module GrapeTokenAuth
           if resource.errors.empty?
             status 200
             present(success: true,
-                    message: "An email has been sent to #{email} containing " +
+                    message: "An email has been sent to #{resource.email} containing " +
                              'instructions for resetting your password.'
                    )
           else
