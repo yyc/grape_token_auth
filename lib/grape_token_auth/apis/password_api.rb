@@ -34,12 +34,7 @@ module GrapeTokenAuth
         resource = ResourceFinder.find(base.resource_scope, params)
         edit_path = routes[0].route_path.gsub(/\(.*\)/, '') + "/edit"
         if resource
-          resource.send_reset_password_instructions(
-            provider: 'email',
-            redirect_url: redirect_url,
-            client_config: params[:config_name],
-            edit_path: edit_path
-          )
+          resource.send_reset_password_instructions
 
           if resource.errors.empty?
             status 200
