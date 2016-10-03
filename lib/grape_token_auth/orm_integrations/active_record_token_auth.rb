@@ -140,19 +140,6 @@ module GrapeTokenAuth
         super(options)
       end
 
-      def send_reset_password_instructions(opts)
-        token = set_reset_password_token
-
-        opts ||= {}
-        opts[:client_config] ||= 'default'
-        opts[:token] = token
-        opts[:to] = email
-
-        GrapeTokenAuth.send_notification(:reset_password_instructions, opts)
-
-        token
-      end
-
       def send_confirmation_instructions(opts)
         opts ||= {}
         token = generate_confirmation_token!
