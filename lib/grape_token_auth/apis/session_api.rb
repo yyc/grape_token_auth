@@ -15,6 +15,13 @@ module GrapeTokenAuth
           message = 'Invalid login credentials. Please try again.'
           throw(:warden, errors: { errors: [message], status: 'error' })
         end
+
+        confirmator = CallbackStore.get_will_sign_in_callback
+        if confirmator && !confirmator.call(resource.username)
+          message = 'User is inactive. Please try again.'
+          throw(:warden, errors: { errors: [message], status: 'error' })
+        end
+
         unless resource.confirmed?
           error_message = 'A confirmation email was sent to your account at ' +
                           "#{resource.email}. You must follow the " +
