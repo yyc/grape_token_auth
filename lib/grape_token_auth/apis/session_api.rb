@@ -15,6 +15,13 @@ module GrapeTokenAuth
           message = 'Invalid login credentials. Please try again.'
           throw(:warden, errors: { errors: [message], status: 'error' })
         end
+
+        custom_sign_in_validation = CallbackStore.get_custom_sign_in_callback
+        if custom_sign_in_validation && !custom_sign_in_validation.call(resource.username)
+          message = 'Login credentials failed custom validation.'
+          throw(:warden, errors: { errors: [message], status: 'error' })
+        end
+
         unless resource.confirmed?
           error_message = 'A confirmation email was sent to your account at ' +
                           "#{resource.email}. You must follow the " +
