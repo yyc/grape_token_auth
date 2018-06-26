@@ -16,9 +16,9 @@ module GrapeTokenAuth
           throw(:warden, errors: { errors: [message], status: 'error' })
         end
 
-        confirmator = CallbackStore.get_will_sign_in_callback
-        if confirmator && !confirmator.call(resource.username)
-          message = 'User is inactive. Please try again.'
+        custom_sign_in_validation = CallbackStore.get_custom_sign_in_callback
+        if custom_sign_in_validation && !custom_sign_in_validation.call(resource.username)
+          message = 'Login credentials failed custom validation.'
           throw(:warden, errors: { errors: [message], status: 'error' })
         end
 
